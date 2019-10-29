@@ -50,10 +50,10 @@ class Scraper(object):
             mode = args[2]
             mode = mode.replace('-', '')
             if mode != 'help' and mode != 'h':
-                if len(args) < 4:
-                    tags = ''
-                else:
+                if len(args) >= 4 and mode == 't':
                     tags = args[3]
+                else:
+                    tags = ''
 
                 if 'w' in args:
                     write = True
