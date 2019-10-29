@@ -1,20 +1,45 @@
 import sys
 from Fetcher import Fetcher
 from Parser import Parser
+from datetime import datetime
 
 
 class Scraper(object):
     @staticmethod
-    def find_all_with_tag(content, tag):
-        print(Parser.find_elements_by_tag(content, tag))
+    def find_all_with_tag(content, tag, write):
+        if write:
+            date_obj = datetime.now()
+            timestamp = str(date_obj.timestamp())
+            results = Parser.find_elements_by_tag(content, tag)
+            file = open(timestamp + 'txt', 'w+')
+            for result in results:
+                file.write(result+"\r\n")
+        else:
+            print(Parser.find_elements_by_tag(content, tag))
 
     @staticmethod
-    def find_all_image_urls(content):
-        print(Parser.find_all_image_urls(content))
+    def find_all_image_urls(content, write):
+        if write:
+            date_obj = datetime.now()
+            timestamp = str(date_obj.timestamp())
+            results = Parser.find_all_image_urls(content)
+            file = open(timestamp + 'txt', 'w+')
+            for result in results:
+                file.write(result+"\r\n")
+        else:
+            print(Parser.find_all_image_urls(content))
 
     @staticmethod
-    def find_all_link_urls(content):
-        print(Parser.find_all_link_urls(content))
+    def find_all_link_urls(content, write):
+        if write:
+            date_obj = datetime.now()
+            timestamp = str(date_obj.timestamp())
+            results = Parser.find_all_link_urls(content)
+            file = open(timestamp + '.txt', 'w+')
+            for result in results:
+                file.write(result+"\r\n")
+        else:
+            print(Parser.find_all_link_urls(content))
 
     def main(self):
         args = sys.argv
@@ -30,15 +55,20 @@ class Scraper(object):
                 else:
                     tags = args[3]
 
+                if 'w' in args:
+                    write = True
+                else:
+                    write = False
+
                 fetcher = Fetcher
                 page = fetcher.get_page(target)
                 content = page.content
                 if mode == 't':
-                    self.find_all_with_tag(content, tags)
+                    self.find_all_with_tag(content, tags, write)
                 elif mode == 'i':
-                    self.find_all_image_urls(content)
+                    self.find_all_image_urls(content, write)
                 elif mode == 'a':
-                    self.find_all_link_urls(content)
+                    self.find_all_link_urls(content, write)
 
 
 if __name__ == '__main__':
