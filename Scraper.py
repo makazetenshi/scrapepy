@@ -42,10 +42,24 @@ class Scraper(object):
             print(Parser.find_all_link_urls(content))
 
     @staticmethod
+    def find_all_with_class(content, class_name, write):
+        if write:
+            date_obj = datetime.now()
+            timestamp = str(date_obj.timestamp())
+            results = Parser.find_all_with_class(content, class_name)
+            file = open(timestamp + '.txt', 'w+')
+            for result in results:
+                file.write(result+"\r\n")
+        else:
+            print(Parser.find_all_with_class(content, class_name))
+
+
+    @staticmethod
     def display_help_menu():
-        help_string = 'usage: Scrape.py <mode> <target> [option] ... [tag] [w]'
+        help_string = 'usage: Scrape.py <mode> <target> [option] ... [arg] [w]'
         help_string = help_string + '\n Modes: '
-        help_string = help_string + '-t : Find all with tag, requires the tag arg\n'
+        help_string = help_string + '-t : Find all with specified tag, requires the tag passed as arg\n'
+        help_string = help_string + '-c : Find all with specified class, requires the class passed as arg\n'
         help_string = help_string + '-i : Find all image urls\n'
         help_string = help_string + '-a : Find all link urls\n'
         help_string = help_string + '-h : Display help menu\n'
@@ -68,9 +82,9 @@ class Scraper(object):
             mode = args[1]
             mode = mode.replace('-', '')
             if len(args) >= 4 and mode == 't':
-                tags = args[3]
+                arguments = args[3]
             else:
-                tags = ''
+                arguments = ''
 
             if 'w' in args:
                 write = True
@@ -84,7 +98,9 @@ class Scraper(object):
                 page = fetcher.get_page(target)
                 content = page.content
                 if mode == 't':
-                    self.find_all_with_tag(content, tags, write)
+                    self.find_all_with_tag(content, arguments, write)
+                elif mode == 'c':
+                    self.find_all_with_class(content, arguments, write)
                 elif mode == 'i':
                     self.find_all_image_urls(content, write)
                 elif mode == 'a':
