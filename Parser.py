@@ -17,9 +17,18 @@ class Parser:
             urls.append(image.get('src'))
         return urls
 
+    @staticmethod
     def find_all_link_urls(content):
         soup = BeautifulSoup(content, 'html.parser')
         urls = []
         for link in soup.find_all('a'):
             urls.append(link.get('src'))
         return urls
+
+    @staticmethod
+    def find_all_with_class(content, class_name):
+        soup = BeautifulSoup(content, 'html.parser')
+        result = soup.find_all(attrs={"class": class_name})
+        print('Result:')
+        print(result)
+        return result
