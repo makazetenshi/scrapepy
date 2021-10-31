@@ -6,62 +6,63 @@ from datetime import datetime
 
 class Scraper(object):
     @staticmethod
-    def find_all_with_tag(content, tag, write, limit):
+    def find_all_with_tag(content, tag, write, limit, recursive):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_elements_by_tag(content, tag, limit)
+            results = Parser.find_elements_by_tag(content, tag, limit, recursive)
             file = open(timestamp + 'txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_elements_by_tag(content, tag, limit))
+            print(Parser.find_elements_by_tag(content, tag, limit, recursive))
 
     @staticmethod
-    def find_all_image_urls(content, write, limit):
+    def find_all_image_urls(content, write, limit, recursive):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_all_image_urls(content, limit)
+            results = Parser.find_all_image_urls(content, limit, recursive)
             file = open(timestamp + 'txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_all_image_urls(content, limit))
+            print(Parser.find_all_image_urls(content, limit, recursive))
 
     @staticmethod
-    def find_all_link_urls(content, write, limit):
+    def find_all_link_urls(content, write, limit, recursive):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_all_link_urls(content, limit)
+            results = Parser.find_all_link_urls(content, limit, recursive)
             file = open(timestamp + '.txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_all_link_urls(content, limit))
+            print(Parser.find_all_link_urls(content, limit, recursive))
 
     @staticmethod
-    def find_all_with_class(content, class_name, write, limit):
+    def find_all_with_class(content, class_name, write, limit, recursive):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_all_with_class(content, class_name, limit)
+            results = Parser.find_all_with_class(content, class_name, limit, recursive)
             file = open(timestamp + '.txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_all_with_class(content, class_name, limit))
+            print(Parser.find_all_with_class(content, class_name, limit, recursive))
 
 
     @staticmethod
     def display_help_menu():
-        help_string = 'usage: Scrape.py <mode> <target> [option] ... [arg] [l=<integer>] [w]'
+        help_string = 'usage: Scrape.py <mode> <target> [option] ... [arg] [l=<integer>] [w] [n]'
         help_string = help_string + '\n Modes: '
         help_string = help_string + '-t : Find all with specified tag, requires the tag passed as arg\n'
         help_string = help_string + '-c : Find all with specified class, requires the class passed as arg\n'
         help_string = help_string + '-i : Find all image urls\n'
         help_string = help_string + '-a : Find all link urls\n'
+        help_string = help_string + 'n : Disable recursive searching, only display direct children\n'
         help_string = help_string + '-l=<integer> : Sets limit for results returned\n'
         help_string = help_string + '-h : Display help menu\n'
         help_string = help_string + '\n'
@@ -101,6 +102,11 @@ class Scraper(object):
             else:
                 write = False
 
+            if 'n' in args:
+                recursive = False
+            else:
+                recursive = True
+
             if mode == 'h' or mode == 'help':
                 self.display_help_menu()
             else:
@@ -108,13 +114,13 @@ class Scraper(object):
                 page = fetcher.get_page(target)
                 content = page.content
                 if mode == 't':
-                    self.find_all_with_tag(content, arguments, write, limit)
+                    self.find_all_with_tag(content, arguments, write, limit, recursive)
                 elif mode == 'c':
-                    self.find_all_with_class(content, arguments, write, limit)
+                    self.find_all_with_class(content, arguments, write, limit, recursive)
                 elif mode == 'i':
-                    self.find_all_image_urls(content, write, limit)
+                    self.find_all_image_urls(content, write, limit, recursive)
                 elif mode == 'a':
-                    self.find_all_link_urls(content, write, limit)
+                    self.find_all_link_urls(content, write, limit, recursive)
 
 
 if __name__ == '__main__':
