@@ -56,12 +56,13 @@ class Scraper(object):
 
     @staticmethod
     def display_help_menu():
-        help_string = 'usage: Scrape.py <mode> <target> [option] ... [arg] [w]'
+        help_string = 'usage: Scrape.py <mode> <target> [option] ... [arg] [l=<integer>] [w]'
         help_string = help_string + '\n Modes: '
         help_string = help_string + '-t : Find all with specified tag, requires the tag passed as arg\n'
         help_string = help_string + '-c : Find all with specified class, requires the class passed as arg\n'
         help_string = help_string + '-i : Find all image urls\n'
         help_string = help_string + '-a : Find all link urls\n'
+        help_string = help_string + '-l=<integer> : Sets limit for results returned\n'
         help_string = help_string + '-h : Display help menu\n'
         help_string = help_string + '\n'
         help_string = help_string + 'Optional:\n'
@@ -91,6 +92,9 @@ class Scraper(object):
             if any('-l=' in s for s in args):
                 results = list(filter(lambda x: '-l=' in x, args))
                 limit = int(str.split(results[0], '=')[1])
+                # Just in case someone adds a negative integer by accident, the limit will be set to 0.
+                if limit < 0:
+                    limit = 0
 
             if 'w' in args:
                 write = True
