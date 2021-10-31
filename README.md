@@ -1,13 +1,17 @@
 # scrapepy
 ## Usage
-To use, simply run `python Scraper.py <mode> <target> <arguments> [-l=] [n] [w]`, `w` is an optional argument, if added the results will be written to a file in the same folder.
- `<arguments>` is also optional and used for specifying search parameters for `t` and `c` modes.
+To use, simply run `python Scraper.py <mode> <target> <arguments> [-l=] [n] [w]`.
+ 
+
+`<arguments>` is optional and used for specifying search parameters for `t` and `c` modes.
 
 `w`, `-l=` and `n` can be added in any order after any `<arguments>`
 
-`-l=`x: Sets a limit for the results the parser returns. X represents a positive integer that sets the limit.
+`w`: is an optional argument, if added the results will be written to a file in the same folder.
 
-`n`: Disables recursive searching and will only find tag and direct children.
+`-l=`x: is an optional argument. Sets a limit for the results the parser returns. X represents a positive integer that sets the limit.
+
+`n`: Disables recursive searching and will only find tag and direct children. Optional, as recursive is enabled by default.
 
 All arguments (except write `w` and disable recursive `n`) must be prefixed with a `-`.
 
