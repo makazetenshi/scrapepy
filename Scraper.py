@@ -6,52 +6,52 @@ from datetime import datetime
 
 class Scraper(object):
     @staticmethod
-    def find_all_with_tag(content, tag, write):
+    def find_all_with_tag(content, tag, write, limit):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_elements_by_tag(content, tag)
+            results = Parser.find_elements_by_tag(content, tag, limit)
             file = open(timestamp + 'txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_elements_by_tag(content, tag))
+            print(Parser.find_elements_by_tag(content, tag, limit))
 
     @staticmethod
-    def find_all_image_urls(content, write):
+    def find_all_image_urls(content, write, limit):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_all_image_urls(content)
+            results = Parser.find_all_image_urls(content, limit)
             file = open(timestamp + 'txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_all_image_urls(content))
+            print(Parser.find_all_image_urls(content, limit))
 
     @staticmethod
-    def find_all_link_urls(content, write):
+    def find_all_link_urls(content, write, limit):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_all_link_urls(content)
+            results = Parser.find_all_link_urls(content, limit)
             file = open(timestamp + '.txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_all_link_urls(content))
+            print(Parser.find_all_link_urls(content, limit))
 
     @staticmethod
-    def find_all_with_class(content, class_name, write):
+    def find_all_with_class(content, class_name, write, limit):
         if write:
             date_obj = datetime.now()
             timestamp = str(date_obj.timestamp())
-            results = Parser.find_all_with_class(content, class_name)
+            results = Parser.find_all_with_class(content, class_name, limit)
             file = open(timestamp + '.txt', 'w+')
             for result in results:
                 file.write(result+"\r\n")
         else:
-            print(Parser.find_all_with_class(content, class_name))
+            print(Parser.find_all_with_class(content, class_name, limit))
 
 
     @staticmethod
@@ -86,6 +86,12 @@ class Scraper(object):
             else:
                 arguments = ''
 
+            limit = 0
+
+            if any('-l=' in s for s in args):
+                results = list(filter(lambda x: '-l=' in x, args))
+                limit = int(str.split(results[0], '=')[1])
+
             if 'w' in args:
                 write = True
             else:
@@ -98,13 +104,13 @@ class Scraper(object):
                 page = fetcher.get_page(target)
                 content = page.content
                 if mode == 't':
-                    self.find_all_with_tag(content, arguments, write)
+                    self.find_all_with_tag(content, arguments, write, limit)
                 elif mode == 'c':
-                    self.find_all_with_class(content, arguments, write)
+                    self.find_all_with_class(content, arguments, write, limit)
                 elif mode == 'i':
-                    self.find_all_image_urls(content, write)
+                    self.find_all_image_urls(content, write, limit)
                 elif mode == 'a':
-                    self.find_all_link_urls(content, write)
+                    self.find_all_link_urls(content, write, limit)
 
 
 if __name__ == '__main__':
