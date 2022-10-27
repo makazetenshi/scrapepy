@@ -53,6 +53,18 @@ class Scraper(object):
         else:
             print(Parser.find_all_with_class(content, class_name, limit, recursive))
 
+    @staticmethod
+    def find_all_with_attribute(content, attribute, write, limit, recursive):
+        if write:
+            date_obj = datetime.now()
+            timestamp = str(date_obj.timestamp())
+            results = Parser.find_all_with_attribute(content, attribute, limit, recursive)
+            file = open(timestamp + '.txt', 'w+')
+            for result in results:
+                file.write(result + "\r\n")
+        else:
+            print(Parser.find_all_with_attribute(content, attribute, limit, recursive))
+
 
     @staticmethod
     def display_help_menu():
@@ -74,6 +86,7 @@ class Scraper(object):
 
     def main(self):
         args = sys.argv
+        modes_with_arguments = ['t', 'c', 'v']
         if len(args) < 2:
             print('Please add arguments to proceed.')
         else:
@@ -83,7 +96,7 @@ class Scraper(object):
                 target = ''
             mode = args[1]
             mode = mode.replace('-', '')
-            if len(args) >= 4 and mode == 't':
+            if len(args) >= 4 and mode in modes_with_arguments:
                 arguments = args[3]
             else:
                 arguments = ''
@@ -121,6 +134,8 @@ class Scraper(object):
                     self.find_all_image_urls(content, write, limit, recursive)
                 elif mode == 'a':
                     self.find_all_link_urls(content, write, limit, recursive)
+                elif mode == 'v':
+                    self.find_all_with_attribute(content, arguments, write, limit, recursive)
 
 
 if __name__ == '__main__':
