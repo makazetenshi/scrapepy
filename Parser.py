@@ -30,3 +30,13 @@ class Parser:
         soup = BeautifulSoup(content, 'html.parser')
         result = soup.find_all(attrs={"class": class_name}, limit=limit, recursive=recursive)
         return result
+
+    @staticmethod
+    def find_all_with_attribute(content, attribute, limit, recursive):
+        attributes      = attribute.split(':')
+        attribute_name  = attributes[0]
+        attribute_value = attributes[1]
+
+        soup = BeautifulSoup(content, 'html.parser')
+        result = soup.find_all(attrs={attribute_name: attribute_value}, limit=limit, recursive=recursive)
+        return result
