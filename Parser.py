@@ -40,3 +40,10 @@ class Parser:
         soup = BeautifulSoup(content, 'html.parser')
         result = soup.find_all(attrs={attribute_name: attribute_value}, limit=limit, recursive=recursive)
         return result
+
+    @staticmethod
+    def find_all_inner_text(content, argument, limit, recursive):
+        soup = BeautifulSoup(content, 'html.parser')
+        result = soup.find_all(text=argument, limit=limit, recursive=recursive)
+
+        return result

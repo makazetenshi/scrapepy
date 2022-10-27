@@ -65,6 +65,19 @@ class Scraper(object):
         else:
             print(Parser.find_all_with_attribute(content, attribute, limit, recursive))
 
+    @staticmethod
+    def find_with_inner_text(content, argument, write, limit, recursive):
+        if write:
+            date_obj = datetime.now()
+            timestamp = str(date_obj.timestamp())
+            results = Parser.find_all_inner_text(content, argument, limit, recursive)
+            file = open(timestamp + '.txt', 'w+')
+            for result in results:
+                file.write(result + "\r\n")
+        else:
+            print(Parser.find_all_inner_text(content, argument, limit, recursive))
+
+
 
     @staticmethod
     def display_help_menu():
@@ -86,7 +99,7 @@ class Scraper(object):
 
     def main(self):
         args = sys.argv
-        modes_with_arguments = ['t', 'c', 'v']
+        modes_with_arguments = ['t', 'c', 'v', 'r']
         if len(args) < 2:
             print('Please add arguments to proceed.')
         else:
@@ -136,6 +149,8 @@ class Scraper(object):
                     self.find_all_link_urls(content, write, limit, recursive)
                 elif mode == 'v':
                     self.find_all_with_attribute(content, arguments, write, limit, recursive)
+                elif mode == 'r':
+                    self.find_with_inner_text(content, arguments, write, limit, recursive)
 
 
 if __name__ == '__main__':
