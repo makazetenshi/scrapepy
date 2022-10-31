@@ -28,8 +28,7 @@ class Parser:
     @staticmethod
     def find_all_with_class(content, class_name, limit, recursive):
         soup = BeautifulSoup(content, 'html.parser')
-        result = soup.find_all(attrs={"class": class_name}, limit=limit, recursive=recursive)
-        return result
+        return soup.find_all(attrs={"class": class_name}, limit=limit, recursive=recursive)
 
     @staticmethod
     def find_all_with_attribute(content, attribute, limit, recursive):
@@ -38,12 +37,16 @@ class Parser:
         attribute_value = attributes[1]
 
         soup = BeautifulSoup(content, 'html.parser')
-        result = soup.find_all(attrs={attribute_name: attribute_value}, limit=limit, recursive=recursive)
-        return result
+        return soup.find_all(attrs={attribute_name: attribute_value}, limit=limit, recursive=recursive)
 
     @staticmethod
     def find_all_inner_text(content, argument, limit, recursive):
         soup = BeautifulSoup(content, 'html.parser')
-        result = soup.find_all(text=argument, limit=limit, recursive=recursive)
+        return soup.find_all(text=argument, limit=limit, recursive=recursive)
 
-        return result
+    @staticmethod
+    def find_parent_from_inner_text(content, argument):
+        soup = BeautifulSoup(content, 'html.parser')
+        result = soup.find(string=argument)
+
+        return result.parent.prettify()
