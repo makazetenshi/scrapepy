@@ -20,6 +20,7 @@ _Modes_
   - c: Search for all occurrences af a specified class (this requires you to specify the class to search for, as an arg)
   - v: Search for all occurrences af a specified attribute pair (this requires you to specify the value pair to search for, as an arg). Arg format is ``attribute:value``
   - r: Search for all occurrences af a specified inner text (this requires you to specify the inner text to search for, as an arg)
+  - p: Search for parent of specified inner text
   - i: Find the image source for all images at specified target
   - a: Find all link hrefs at specified target
   - h: Display help menu
